@@ -1,3 +1,12 @@
+import pytz
+from datetime import datetime
+
+data_deposito = datetime.now(pytz.timezone("America/Manaus"))
+data_sacar = datetime.now(pytz.timezone("America/Manaus"))
+data_extrato = datetime.now(pytz.timezone("America/Manaus"))
+data_sair = datetime.now(pytz.timezone("America/Manaus"))
+
+
 
 menu = """
 =================== M a f ê B a n k ======================
@@ -27,14 +36,15 @@ while True:
         if valor > 0:
             saldo += valor
             extrato += f"Depósito: R$ {valor:.2f}\n"
-
+            print(f"Déposito realizado com sucesso: {data_deposito}")
         else:
-            print("Desculpe, não entendi. Por favor informe um valor válido!")
+            print(f"Desculpe, não entendi. Por favor informe um valor válido! {data_deposito}")
+         
 
     elif opcao == "1":
         
         valor = float(input(f"Por favor, informe o valor do Saque: "))
-
+        
         excedeu_saldo = valor > saldo
 
         excedeu_limite = valor > limite
@@ -43,24 +53,25 @@ while True:
 
         if excedeu_saldo:
 
-            print("Ops! Parece que a operação falhou por falta de saldo!")
+            print(f"Ops! Parece que a operação falhou por falta de saldo! {data_sacar}")
         
         elif excedeu_limite:
 
-            print("Ops! Parece que a operação falhou! Valor do saque excede o limite!")
+            print(f"Ops! Parece que a operação falhou! Valor do saque excede o limite! {data_sacar}")
 
         elif excedeu_saques:
 
-            print("Desculpe! A operação falhou! Número máximo de saques excedido. Por favor, volte amanhã. Obrigado(a)!")
+            print(f"Desculpe! A operação falhou! Número máximo de saques excedido. Por favor, volte amanhã. Obrigado(a)! {data_sacar}")
 
 
         elif valor > 0:
             saldo -= valor
             extrato += f"Saque: R$ {valor:.2f}\n"
             numero_saques += 1
+            print(f"Saque foi realizado com sucesso: {data_sacar}")
 
         else:
-            print("Desculpe! Valor informado é inválido. Insira outro valor!")
+            print(f"Desculpe! Valor informado é inválido. Insira outro valor! {data_sacar}")
 
 
     elif opcao == "2":
@@ -68,13 +79,14 @@ while True:
 
         print("Até o momento não houve registro de movimentações." if not extrato else extrato)
 
-        print(f"\nSaldo: R$ {saldo:.2f}")
+        print(f"\nSaldo: R$ {saldo:.2f} em {data_extrato}")
 
         print("========================================================")
 
     elif opcao == "3":
+        print(f"Você saiu da sua conta. Para retornar, reenicie e escolha uma operação. {data_sair}")
 
         break
 
     else:
-        print("Ops! Parece que a operação selecionada é inválida. Por favor tente novamente!")
+        print(f"Ops! Parece que a operação selecionada é inválida. Por favor tente novamente! {data_sair}")
