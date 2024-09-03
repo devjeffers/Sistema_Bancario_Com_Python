@@ -1,5 +1,9 @@
+import streamlit as st
+st.title("Mafê Bank")
+
 import pytz
 from datetime import datetime
+
 
 # Função para obter a data e hora atual formatada
 def get_formatted_datetime():
