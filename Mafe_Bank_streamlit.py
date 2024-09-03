@@ -109,7 +109,7 @@ def principal():
         st.session_state.agencia = "0001"
 
     if 'limite_saques_diario' not in st.session_state:
-        st.session_state.limite_saques_diario = 3
+        st.session_state.limite_saques_diario = 5
 
     st.title("Mafê Bank")
 
