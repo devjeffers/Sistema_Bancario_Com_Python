@@ -43,7 +43,7 @@ def sacar():
 def exibir_extrato():
     data_extrato = obter_data_hora_manaus()
     st.write("### Extrato")
-    st.write("Até o momento não houve registro de movimentações." if not st.session_state.extrato else st.session_state.extrato)
+    st.write(f"Até o momento não houve registro de movimentações." if not f"{st.session_state.extrato}" else f"{st.session_state.extrato}")
     st.write(f"**Saldo:** R$ {st.session_state.saldo:.2f} em {data_extrato}")
 
 def criar_nova_conta():
@@ -69,17 +69,17 @@ def criar_novo_usuario():
     data_novo_usuario = obter_data_hora_manaus()
     cpf = st.text_input("Por favor, escreva seu CPF (somente números):")
     usuario = filtrar_usuarios(cpf)
+    nome = st.text_input("Escreva o seu nome completo, por gentileza:")
+    data_nascimento = st.text_input("Escreva a data de nascimento (dd-mm-aaaa):")
+    endereco = st.text_input("Informe seu endereço (logradouro, nº, bairro, cidade/sigla do estado):")
+    st.session_state.usuarios.append({"nome": nome, "data_nascimento": data_nascimento, "cpf": cpf, "endereco": endereco})
 
     if st.button("Cadastrar Usuário"):
         if usuario:
             st.error(f"Já existe um usuário com esse CPF! {data_novo_usuario}")
         else:
-            nome = st.text_input("Escreva o seu nome completo, por gentileza:")
-            data_nascimento = st.text_input("Escreva a data de nascimento (dd-mm-aaaa):")
-            endereco = st.text_input("Informe seu endereço (logradouro, nº, bairro, cidade/sigla do estado):")
-            st.session_state.usuarios.append({"nome": nome, "data_nascimento": data_nascimento, "cpf": cpf, "endereco": endereco})
             st.success(f"Usuário cadastrado com sucesso em {data_novo_usuario}!")
-
+    
 def filtrar_usuarios(cpf):
     usuarios_filtrados = [usuario for usuario in st.session_state.usuarios if usuario["cpf"] == cpf]
     return usuarios_filtrados[0] if usuarios_filtrados else None
