@@ -3,10 +3,16 @@ O Projeto é Simples mas que nos mostra como a linguagem Python atrai de verdade
 
 ## 👨‍💻 O código realiza o:
  - Simulador de um Sistema Bancário;
+ - O sistema foi otimizado;
+ - Foi inserido nas operações a manipulação de datas e horas.
  - Operações realizadas
-     -  Depósito;
-     -  Saques;
-     -  Extratos.
+     - Depositar
+     - Sacar
+     - Extrato
+     - Nova conta
+     - Listar contas
+     - Novo usuário
+     - Sair
 
 ## 💻Tecnologias utilizadas:
 - ![Python](https://img.shields.io/badge/Python-000?style=for-the-badge&logo=python&logoColor=E94D5F)
@@ -21,6 +27,5 @@ O Projeto é Simples mas que nos mostra como a linguagem Python atrai de verdade
 - [Vs Code](https://code.visualstudio.com/docs)
 
 ## Siga - me
-[![LinkedIn](https://img.shields.io/badge/-LinkedIn-000?style=for-the-badge&logo=linkedin&logoColor=30A3DC)](https://www.linkedin.com/in/jefferson-christhopher-jimenez-ribeiro-296894153/)
-[![Instagram](https://img.shields.io/badge/-Instagram-000?style=for-the-badge&logo=instagram&logoColor=30A3DC)](https://www.instagram.com/jeffers.jimenez)
-[![E-mail](https://img.shields.io/badge/-Email-000?style=for-the-badge&logo=gmail&logoColor=E94D5F)](mailto:jeffersonjimenezump@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/-LinkedIn-000?style=for-the-badge&logo=linkedin&logoColor=30A3DC)](https://www.linkedin.com/in/dev-jeffers/)
+[![E-mail](https://img.shields.io/badge/-Email-000?style=for-the-badge&logo=gmail&logoColor=E94D5F)](mailto:devsfull.jefferson@gmail.com)
