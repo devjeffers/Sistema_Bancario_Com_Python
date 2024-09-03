@@ -76,9 +76,9 @@ def criar_novo_usuario():
 
     if st.button("Cadastrar Usuário"):
         if usuario:
-            st.error(f"Já existe um usuário com esse CPF! {data_novo_usuario}")
-        else:
             st.success(f"Usuário cadastrado com sucesso em {data_novo_usuario}!")
+        else:
+            st.error(f"Já existe um usuário com esse CPF! {data_novo_usuario}")
     
 def filtrar_usuarios(cpf):
     usuarios_filtrados = [usuario for usuario in st.session_state.usuarios if usuario["cpf"] == cpf]
