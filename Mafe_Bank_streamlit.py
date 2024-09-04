@@ -8,15 +8,15 @@ def obter_data_hora_manaus():
 
 # Funções principais
 def depositar():
-    valor = st.number_input("Por favor, informe o valor do Depósito:", min_value=0.0, step=0.01)
+    valor = st.number_input("Por favor, informe o valor do Depósito: ", min_value=0.0, step=0.01)
     data_deposito = obter_data_hora_manaus()
     if st.button("Confirmar Depósito"):
         if valor > 0:
             st.session_state.saldo += valor
-            st.session_state.extrato += f"Depósito: \tR$ {valor:.2f} em {data_deposito}\n"
-            st.success(f"Depósito realizado com sucesso em {data_deposito}!")
+            st.session_state.extrato += f"\t\tDepósito: \t\tR$ {valor:.2f} em {data_deposito}\n"
+            st.success(f"\t\tDepósito realizado com sucesso em {data_deposito}!")
         else:
-            st.error(f"Valor inválido! Depósito não realizado. {data_deposito}")
+            st.error(f"\t\tValor inválido! Depósito não realizado. {data_deposito}")
 
 def sacar():
     valor = st.number_input("Por favor, informe o valor do Saque:", min_value=0.0, step=0.01)
@@ -27,18 +27,18 @@ def sacar():
         excedeu_saques = st.session_state.numero_saques >= st.session_state.limite_saques_diario
 
         if excedeu_saldo:
-            st.error(f"Saldo insuficiente! Operação falhou. {data_sacar}")
+            st.error(f"\t\tSaldo insuficiente! Operação falhou. {data_sacar}")
         elif excedeu_limite:
-            st.error(f"Valor do saque excede o limite permitido! Operação falhou. {data_sacar}")
+            st.error(f"\t\tValor do saque excede o limite permitido! Operação falhou. {data_sacar}")
         elif excedeu_saques:
-            st.error(f"Número máximo de saques diários excedido! {data_sacar}")
+            st.error(f"\t\tNúmero máximo de saques diários excedido! {data_sacar}")
         elif valor > 0:
             st.session_state.saldo -= valor
             st.session_state.extrato += f"Saque: \t\tR$ {valor:.2f} em {data_sacar}\n"
             st.session_state.numero_saques += 1
-            st.success(f"Saque realizado com sucesso em {data_sacar}!")
+            st.success(f"\t\tSaque realizado com sucesso em \t\t{data_sacar}!")
         else:
-            st.error(f"Valor inválido! Saque não realizado. {data_sacar}")
+            st.error(f"\t\tValor inválido! Saque não realizado. \t\t{data_sacar}")
 
 def exibir_extrato():
     data_extrato = obter_data_hora_manaus()
@@ -61,7 +61,7 @@ def criar_nova_conta():
 
 def listar_contas():
     data_listar_contas = obter_data_hora_manaus()
-    st.write("### Contas Existentes ###")
+    st.write("### Contas Existentes ")
     for conta in st.session_state.contas_existentes:
         st.write(f"Agência: {conta['agencia']} | C/C: {conta['numero_conta']} | Nome Titular: {conta['usuario']['nome']} - {data_listar_contas}")
 
@@ -71,7 +71,7 @@ def criar_novo_usuario():
     usuario = filtrar_usuarios(cpf)
     nome = st.text_input("Escreva o seu nome completo, por gentileza:")
     data_nascimento = st.text_input("Escreva a data de nascimento (dd-mm-aaaa):")
-    endereco = st.text_input("Informe seu endereço (logradouro, nº, bairro, cidade/sigla do estado):")
+    endereco = st.text_input("Informe seu endereço (Logradouro, nº, bairro, Cidade/Sigla do Estado):")
     st.session_state.usuarios.append({"nome": nome, "data_nascimento": data_nascimento, "cpf": cpf, "endereco": endereco})
 
     if st.button("Cadastrar Usuário"):
