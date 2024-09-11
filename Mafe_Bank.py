@@ -4,7 +4,6 @@ st.title("Mafê Bank")
 import pytz
 from datetime import datetime
 
-
 # Função para obter a data e hora atual formatada
 def get_formatted_datetime():
     return datetime.now(pytz.timezone("America/Manaus")).strftime("%d/%m/%Y %H:%M:%S")
@@ -13,17 +12,17 @@ import textwrap
 
 def menu():
     menu = """\n
-    =================== M a f ê  B a n k ======================
-
-    [0]\tDepositar
-    [1]\tSacar
-    [2]\tExtrato
-    [3]\tNova conta
-    [4]\tListar contas
-    [5]\tNovo usuário
-    [6]\tSair
-
-    ==> """
+    =================== M a f ê  B a n k =====================
+    ||
+    ||  [0]\tDepositar 
+    ||  [1]\tSacar
+    ||  [2]\tExtrato
+    ||  [3]\tNova conta
+    ||  [4]\tListar contas
+    ||  [5]\tNovo usuário
+    ||  [6]\tSair
+    ||
+    ||    ==> """
     return input(textwrap.dedent(menu))
 
 def depositar(saldo, valor, extrato, /):
@@ -99,7 +98,7 @@ def criar_novo_usuario(usuarios):
         return
     nome = input("Escreva o seu nome completo, por gentileza: ")
     data_nascimento = input("Agora, escreva a data de nascimento nesse formato(dd-mm-aaaa): ")
-    endereco = input("Informe seu endereço (logradouro, nº, bairro, cidade/sigla do estado): ")
+    endereco = input("Informe seu endereço (logradouro, nº, bairro, Cidade/sigla do Estado): ")
 
     usuarios.append({"nome": nome, "data_nascimento": data_nascimento, "cpf": cpf, "endereco": endereco})
 
