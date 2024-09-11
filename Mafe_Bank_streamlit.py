@@ -39,11 +39,15 @@ class Saque(Transacao):
             st.error(f"O valor do saque excede o limite permitido! Operação falhou em {data_saque}.")
         elif self.conta.numero_saques >= self.conta.limite_saques_diario:
             st.error(f"Número máximo de saques diários excedido em {data_saque}.")
-        else:
+
+        elif self.valor > 0:
             self.conta.saldo -= self.valor
             self.conta.numero_saques += 1
             self.conta.extrato.append(f"Saque: R$ {self.valor:.2f} em {data_saque}")
             st.success(f"Saque de R$ {self.valor:.2f} realizado com sucesso em {data_saque}!")
+
+        else:
+            print(f"Desculpe! Valor informado é inválido. Insira outro valor! {data_saque}")
 
 # Criando a Classe Depósito
 class Deposito(Transacao):
@@ -64,10 +68,10 @@ class Conta:
         self.numero_conta = numero_conta
         self.cliente = cliente
         self.saldo = 0.0
-        self.limite = 500.0
+        self.limite = 1000.0
         self.extrato = []
         self.numero_saques = 0
-        self.limite_saques_diario = 3
+        self.limite_saques_diario = 5
 
     def exibir_extrato(self):
         data_extrato = obter_data_hora_manaus()
