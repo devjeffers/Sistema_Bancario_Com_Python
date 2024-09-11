@@ -3,7 +3,6 @@ import pytz
 from datetime import datetime
 from abc import ABC, abstractmethod
 
-
 # Função para obter a data e hora atual em Manaus
 def obter_data_hora_manaus():
     return datetime.now(pytz.timezone("America/Manaus"))
@@ -27,10 +26,11 @@ class Transacao(ABC):
 
 # Agora vamos criar a Classe Saque
 class Saque(Transacao):
-    def __init__(self, valor, conta):
+    def __init__(self, valor, conta, saldo):
         self.valor = valor
         self.conta = conta
-    
+        self.saldo = saldo
+
     def registrar(self):
         data_saque = obter_data_hora_manaus()
         if self.valor > self.conta.saldo:
@@ -40,7 +40,7 @@ class Saque(Transacao):
         elif self.conta.numero_saques >= self.conta.limite_saques_diario:
             st.error(f"Número máximo de saques diários excedido em {data_saque}.")
 
-        elif self.valor > 0:
+        elif self.conta.valor > 0:
             self.conta.saldo -= self.valor
             self.conta.numero_saques += 1
             self.conta.extrato.append(f"Saque: R$ {self.valor:.2f} em {data_saque}")
@@ -118,11 +118,19 @@ def criar_nova_conta():
 
 def depositar():
     if st.session_state.contas_existentes:
-        conta_selecionada = st.selectbox("Selecione a Conta:", st.session_state.contas_existentes, format_func=lambda c: f"Agência: {c.agencia}, Conta: {c.numero_conta}")
+        conta_selecionada = st.selectbox(
+            "Selecione a Conta:",
+            st.session_state.contas_existentes,
+            format_func=lambda c: f"Agência: {c.agencia}, Conta: {c.numero_conta}"
+        )
         valor = st.number_input("Por favor, informe o valor do Depósito:", min_value=0.0, step=0.01)
+        
         if st.button("Confirmar Depósito"):
             if valor > 0:
+                # Criando a instância de Depósito
                 deposito = Deposito(valor, conta_selecionada)
+                
+                # Chamando o método registrar() para efetivar o depósito
                 deposito.registrar()
             else:
                 st.error("Valor inválido! Depósito não realizado.")
@@ -131,12 +139,21 @@ def depositar():
 
 def sacar():
     if st.session_state.contas_existentes:
-        conta_selecionada = st.selectbox("Selecione a Conta:", st.session_state.contas_existentes, format_func=lambda c: f"Agência: {c.agencia}, Conta: {c.numero_conta}")
+        # Selecionar a conta vinculada a um cliente existente
+        conta_selecionada = st.selectbox(
+            "Selecione a Conta:",
+            st.session_state.contas_existentes,
+            format_func=lambda c: f"Agência: {c.agencia}, Conta: {c.numero_conta} - Titular: {c.cliente.nome}"
+        )
         valor = st.number_input("Por favor, informe o valor do Saque:", min_value=0.0, step=0.01)
+        
         if st.button("Confirmar Saque"):
             if valor > 0:
+                # Criando uma instância de Saque e associando-a à conta selecionada
                 saque = Saque(valor, conta_selecionada)
-                saque.registrar()
+                saque.registrar()  # Registrando a transação de saque
+
+                # Verificação de saldo e registro de sucesso ou erro já é feito dentro do método registrar()
             else:
                 st.error("Valor inválido! Saque não realizado.")
     else:
@@ -144,7 +161,7 @@ def sacar():
 
 def listar_contas():
     data_listar_contas = obter_data_hora_manaus()
-    st.write("### Contas Existentes ")
+    st.write("||||| Contas Existentes |||||")
     for conta in st.session_state.contas_existentes:
         st.write(f"Agência: {conta.agencia} | C/C: {conta.numero_conta} | Nome Titular: {conta.cliente.nome} - {data_listar_contas}")
 
@@ -155,14 +172,16 @@ def filtrar_usuarios(cpf):
 # Declaramos aqui a função principal sem perder a interação com o usuário...
 # Função principal
 def principal():
+    
     if 'usuarios' not in st.session_state:
         st.session_state.usuarios = []
     if 'contas_existentes' not in st.session_state:
         st.session_state.contas_existentes = []
     if 'agencia' not in st.session_state:
         st.session_state.agencia = "0001"
-
+    
     st.title("Mafê Bank")
+    st.subheader("Bem-vindo ao Sistema de Operações Bancárias!")
 
 # aqui ainda mantemos as seleções anteriores, não alteramos, apenas refatoramos o código...
     option = st.selectbox('Escolha uma operação:', ['Depositar', 'Sacar', 'Extrato', 'Nova conta', 'Listar contas', 'Novo usuário', 'Sair'])
@@ -172,8 +191,15 @@ def principal():
     elif option == 'Sacar':
         sacar()
     elif option == 'Extrato':
-        conta_selecionada = st.selectbox("Selecione a Conta:", st.session_state.contas_existentes, format_func=lambda c: f"Agência: {c.agencia}, Conta: {c.numero_conta}")
-        conta_selecionada.exibir_extrato()
+        if st.session_state.contas_existentes:
+            conta_selecionada = st.selectbox(
+            "Selecione a Conta:",
+            st.session_state.contas_existentes,
+            format_func=lambda c: f"Agência: {c.agencia}, Conta: {c.numero_conta}"
+        )
+            conta_selecionada.exibir_extrato()  # Chama a função para exibir o extrato
+        else:
+            st.error("Nenhuma conta disponível para exibir o extrato.")
     elif option == 'Nova conta':
         criar_nova_conta()
     elif option == 'Listar contas':
@@ -182,6 +208,6 @@ def principal():
         criar_novo_usuario()
     elif option == 'Sair':
         st.write("Você saiu. Para retornar, reinicie e escolha uma operação.")
-
+    
 if __name__ == "__main__":
     principal()
