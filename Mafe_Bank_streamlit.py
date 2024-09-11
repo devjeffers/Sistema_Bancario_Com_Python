@@ -138,22 +138,29 @@ def depositar():
         st.error("Nenhuma conta disponível para depósito.")
 
 def sacar():
+    # Verifica se há contas disponíveis
     if st.session_state.contas_existentes:
-        # Selecionar a conta vinculada a um cliente existente
+        # Seleciona a conta pelo selectbox
         conta_selecionada = st.selectbox(
             "Selecione a Conta:",
             st.session_state.contas_existentes,
-            format_func=lambda c: f"Agência: {c.agencia}, Conta: {c.numero_conta} - Titular: {c.cliente.nome}"
+            format_func=lambda c: f"Agência: {c.agencia}, Conta: {c.numero_conta}"
         )
-        valor = st.number_input("Por favor, informe o valor do Saque:", min_value=0.0, step=0.01)
-        
-        if st.button("Confirmar Saque"):
-            if valor > 0:
-                # Criando uma instância de Saque e associando-a à conta selecionada
-                saque = Saque(valor, conta_selecionada)
-                saque.registrar()  # Registrando a transação de saque
 
-                # Verificação de saldo e registro de sucesso ou erro já é feito dentro do método registrar()
+        # Input para o valor do saque
+        valor = st.number_input("Por favor, informe o valor do Saque:", min_value=0.0, step=0.01)
+
+        # Ao clicar no botão, executa a lógica do saque
+        if st.button("Confirmar Saque"):
+            # Verifica se o valor é positivo
+            if valor > 0:
+                try:
+                    # Cria um objeto Saque
+                    saque = Saque(valor, conta_selecionada)
+                    # Registra o saque
+                    saque.registrar()
+                except AttributeError as e:
+                    st.error(f"Erro ao realizar o saque: {str(e)}")
             else:
                 st.error("Valor inválido! Saque não realizado.")
     else:
@@ -200,6 +207,7 @@ def principal():
             conta_selecionada.exibir_extrato()  # Chama a função para exibir o extrato
         else:
             st.error("Nenhuma conta disponível para exibir o extrato.")
+
     elif option == 'Nova conta':
         criar_nova_conta()
     elif option == 'Listar contas':
